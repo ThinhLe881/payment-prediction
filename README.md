@@ -1,4 +1,4 @@
-# Payment Prediction AlgorithmPayment - Thinh Le
+# Payment Prediction Algorithm - Thinh Le
 # (Classification Algorithms)
 
 ## Dataset:
