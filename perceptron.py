@@ -97,8 +97,8 @@ def accuracy_metric(actual, prediction):
 
 def main():
     parser = argparse.ArgumentParser(description='Perceptron Classification')
-    parser.add_argument('input_file', metavar='inputfile', type=str, help='The input dataset (.txt)')
-    parser.add_argument('output_file', metavar='outputfile', type=str, help='The output classification (.csv)')
+    parser.add_argument('input_file', metavar='input_file', type=str, help='The input dataset (.txt, .dat, .data)')
+    parser.add_argument('output_file', metavar='output_file', type=str, help='The output classification (.csv)')
     args = parser.parse_args()
 
     in_file = args.input_file
