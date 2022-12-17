@@ -5,7 +5,6 @@ import numpy as np
 def NormalizeData(data):
     return (data - np.min(data)) / (np.max(data) - np.min(data))
 
-
 def preprocessing(infile, outfile):
     # Import
     df = pd.read_table(infile)
@@ -70,6 +69,3 @@ def preprocessing(infile, outfile):
 
     # Export
     df.to_csv(outfile, index=False)
-
-
-preprocessing('risk-train.txt', 'risk-train-preprocessed.csv')

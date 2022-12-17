@@ -2,6 +2,8 @@ import random as random
 import csv as csv
 import numpy as np
 import pandas as pd
+import argparse
+from preprocessing import preprocessing
 
 
 # Load a CSV file
@@ -93,49 +95,64 @@ def accuracy_metric(actual, prediction):
                 false_positive += 1
     return correct / float(len(actual)) * 100.0, true_positive, false_positive, true_negative, false_negative
 
+def main():
+    parser = argparse.ArgumentParser(description='Perceptron Classification')
+    parser.add_argument('input_file', metavar='inputfile', type=str, help='The input dataset (.txt)')
+    parser.add_argument('output_file', metavar='outputfile', type=str, help='The output classification (.csv)')
+    args = parser.parse_args()
 
-# Test the Perceptron algorithm
-# Import data
-filename = 'risk-train-preprocessed.csv'
-dataset = load_csv(filename)
+    in_file = args.input_file
+    out_file = args.output_file
 
-# Remove headers
-dataset = np.delete(dataset, 0, 0)
+    # Pre-processing:
+    prep_file = in_file.split('.', 1)[0] + '-preprocessed.csv'
+    preprocessing(in_file, prep_file)
 
-# Test Perceptron algorithm using percentage split
-train_set, test_set = percentage_split(dataset, percentage=0.7)
+    # Test the Perceptron algorithm
+    # Import data
+    filename = prep_file
+    dataset = load_csv(filename)
 
-# Remove id column
-train_set = np.delete(train_set, 0, 1)
-order_id_test_set = test_set[:, 0]
-test_set = np.delete(test_set, 0, 1)
+    # Remove headers
+    dataset = np.delete(dataset, 0, 0)
 
-# Convert class column to numeric
-class_column_convert(train_set, len(train_set[0])-1, True)
-class_column_convert(test_set, len(test_set[0])-1, True)
+    # Test Perceptron algorithm using percentage split
+    train_set, test_set = percentage_split(dataset, percentage=0.7)
 
-# Convert values to float
-train_set = train_set.astype(float)
-test_set = test_set.astype(float)
+    # Remove id column
+    train_set = np.delete(train_set, 0, 1)
+    order_id_test_set = test_set[:, 0]
+    test_set = np.delete(test_set, 0, 1)
 
-# Run the Perceptron algorithm
-prediction = perceptron(train_set, test_set, l_rate=0.01, n_pass=1)
-actual = [row[-1] for row in test_set]
+    # Convert class column to numeric
+    class_column_convert(train_set, len(train_set[0])-1, True)
+    class_column_convert(test_set, len(test_set[0])-1, True)
 
-# Calculate accuracy and other stats
-accuracy, true_positive, false_positive, true_negative, false_negative = accuracy_metric(
-    actual, prediction)
+    # Convert values to float
+    train_set = train_set.astype(float)
+    test_set = test_set.astype(float)
 
-print('accuracy: %.4f  true_positive: %d  false_positive: %d  true_negative: %d  false_negative: %d' %
-      (accuracy, true_positive, false_positive, true_negative, false_negative))
+    # Run the Perceptron algorithm
+    prediction = perceptron(train_set, test_set, l_rate=0.01, n_pass=1)
+    actual = [row[-1] for row in test_set]
 
-# Merge id and class columns
-result = np.column_stack((order_id_test_set, prediction))
+    # Calculate accuracy and other stats
+    accuracy, true_positive, false_positive, true_negative, false_negative = accuracy_metric(
+        actual, prediction)
 
-# Convert class column to string
-class_column_convert(result, 1, False)
+    print('accuracy: %.4f  true_positive: %d  false_positive: %d  true_negative: %d  false_negative: %d' %
+        (accuracy, true_positive, false_positive, true_negative, false_negative))
 
-# Export result to csv file
-headers = ['ORDER_ID', 'CLASS']
-df = pd.DataFrame(result)
-df.to_csv('output.csv', index=False, header=headers)
+    # Merge id and class columns
+    result = np.column_stack((order_id_test_set, prediction))
+
+    # Convert class column to string
+    class_column_convert(result, 1, False)
+
+    # Export result to csv file
+    headers = ['ORDER_ID', 'CLASS']
+    df = pd.DataFrame(result)
+    df.to_csv(out_file, index=False, header=headers)
+
+if __name__ == "__main__":
+    main()
