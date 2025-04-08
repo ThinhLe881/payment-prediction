@@ -1,25 +1,26 @@
-# Payment Prediction Algorithm - Thinh Le
-# (Classification Algorithms)
+# Perceptron Classifier
+
+Implement a simple Perceptron algorithm from scratch using Python.
 
 ## Dataset:
 
 -   Payment information from 30000 online purchase orders
+-   Each online purchase order is described by 44 attributes
 
--   Each online purchase order and is described by 44 attributes
+### Objective:
 
-## Task:
+To assist an online trader in identifying whether a person making an order is likely to pay, using data mining and machine learning techniques.
 
--   To help the online trader to recognize if a person who makes an order is a customer who will eventually pay the goods by using data mining techniques
+### Task Overview:
 
--   Apply data cleaning and remove irrelevant information
-
--   Randomly split the data set into a training set (70%) and a test set (30%)
-
--   Use a classification algorithm to build a prediction model based on the training data
+-   Data cleaning by removing irrelevant or noisy information from the dataset.
+-   Randomly split the data set into a training set (70%) and a test set (30%).
+-   Use a classification algorithm to build a prediction model based on the training data.
+-   Evaluate the model's accuracy and generate classification metrics on the test set.
 
 ## How to run:
 
--   Put the dataset in the same directory with the code
+-   Put the dataset in the same directory with the code.
 
 -   Pre-process the dataset:
 
